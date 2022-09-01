@@ -41,7 +41,10 @@ public class Application {
                         StringBuilder phrase = new StringBuilder(str.substring(str.indexOf(roles[j] + ":") + a.length() + 1, l));
                         str.replace(str.indexOf(roles[j] + ":"), l, "");//str.indexOf(roles[j] + ":") + a.length() + 1 +
 
-                        adder.insert(adder.length(), Integer.toString(b) + ")" + phrase + "");
+
+                        adder.append( Integer.toString(b));
+                        adder.append(")");
+                        adder.append(phrase);
 
 
                         if ((adder.indexOf("\n")  < 0)&&(adder.lastIndexOf("\n") < (adder.length() - 1))) {
