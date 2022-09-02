@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class Application {
 
     public static String printTextPerRole(String[] roles, String[] textLines) {
-        //System.out.println(" TEXT!! ");
         int rl = roles.length;
         int tl = textLines.length;
         String outer = "";
@@ -27,28 +26,18 @@ public class Application {
 
             if (str.length() > 1) {
                 for (int j = 0; j < roles.length; j++) {
-                    if (str.indexOf(roles[j] + ":") >= 0) {
+                    if (str.indexOf(roles[j] + ":") == 0) {
                         StringBuilder adder = parsed.get(j);// текущий набор слов роли
                         int b = i + 1;//нумерация строк не с 0 поэтому +1
                         String a = roles[j]; //находим текущую роль, убираем из строки начало слов роли
                         int l = str.length();
-                        for (int k = 0; k< roles.length; k++) {
-                            if ((k != j)&&(str.indexOf(roles[k] + ":") > str.indexOf(roles[j] + ":"))) {
-                                l = str.indexOf(roles[k] + ":");
-                                break;
-                            }
-                        }
                         StringBuilder phrase = new StringBuilder(str.substring(str.indexOf(roles[j] + ":") + a.length() + 1, l));
                         str.replace(str.indexOf(roles[j] + ":"), l, "");//str.indexOf(roles[j] + ":") + a.length() + 1 +
-
-
-                        adder.append( Integer.toString(b));
+                        adder.append(Integer.toString(b));
                         adder.append(")");
                         adder.append(phrase);
-
-
-                        if ((adder.indexOf("\n")  < 0)&&(adder.lastIndexOf("\n") < (adder.length() - 1))) {
-                            adder.insert(adder.length(),"\n");
+                        if ((adder.indexOf("\n") < 0) && (adder.lastIndexOf("\n") < (adder.length() - 1))) {
+                            adder.insert(adder.length(), "\n");
                         }
                         adder.insert(adder.length(), "\n");
                         parsed.set(j, adder);
@@ -70,14 +59,14 @@ public class Application {
         List<String> roles = new ArrayList<String>();
         List<String> words = new ArrayList<String>();
         try {
-            roles = Files.readAllLines(Paths.get("D:\\Intelij_Idea_Projects\\rolefinder\\src\\role_names"));
+            roles = Files.readAllLines(Paths.get("C:\\Users\\Дмитрий\\IdeaProjects\\rolefinder\\src\\role_names"));
         } catch (IOException e) {
             System.out.println("не прочли");
             ;
         }
         ;
         try {
-            words = Files.readAllLines(Paths.get("D:\\Intelij_Idea_Projects\\rolefinder\\src\\role_text"));
+            words = Files.readAllLines(Paths.get("C:\\Users\\Дмитрий\\IdeaProjects\\rolefinder\\src\\role_text"));
         } catch (IOException e) {
             System.out.println("не прочли");
             ;
