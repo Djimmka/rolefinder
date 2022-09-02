@@ -9,6 +9,51 @@ import java.util.Scanner;
 
 public class Application {
 
+    public static class Cat {
+        public void sayHello() {
+            System.out.println("Мяу!");
+        }
+    }
+
+    public static class Dog {
+        public void sayHello() {
+            System.out.println("Гав!");
+        }
+
+        public void catchCat(Cat cat) {
+            System.out.println("Кошка поймана");
+            this.sayHello();
+            cat.sayHello();
+        }
+    }
+
+    public static class Human {
+        private byte age;
+        private String name;
+        private String secondName;
+        private String favoriteSport;
+        public Human(){
+        }
+        public Human(int age, String name, String secondName) {
+            this.age = (byte)age;
+            this.name = name;
+            this.secondName = secondName;
+        }
+        public Human (int age, String name, String secondName, String favoriteSport) {
+            this.age = (byte)age;
+            this.name = name;
+            this.secondName = secondName;
+            if (this.favoriteSport.length() == 0) {
+                Human(age, name, secondName);
+            } else {
+                this.favoriteSport = favoriteSport;
+            }
+        }
+    }
+
+    }
+
+
     public static String printTextPerRole(String[] roles, String[] textLines) {
         int rl = roles.length;
         int tl = textLines.length;
@@ -89,3 +134,5 @@ public class Application {
 
     }
 }
+
+
