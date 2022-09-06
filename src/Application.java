@@ -43,13 +43,9 @@ public class Application {
             this.age = (byte)age;
             this.name = name;
             this.secondName = secondName;
-            if (this.favoriteSport.length() == 0) {
-                Human(age, name, secondName);
-            } else {
-                this.favoriteSport = favoriteSport;
-            }
+            this.favoriteSport = favoriteSport;
         }
-    }
+
 
     }
 
@@ -119,6 +115,14 @@ public class Application {
         ;
         String l = printTextPerRole(roles.toArray(new String[0]), words.toArray(new String[0]));
         System.out.println(l);
+
+        byte[] arr = new byte[]{(byte) 'a', (byte) 'b',(byte) 'c', (byte) 'd'};
+        System.out.println(arr.toString());
+        AsciiCharSequence seq = new AsciiCharSequence(arr);
+        System.out.println(seq.toString());
+        System.out.println(seq.charAt(1));
+        System.out.println(seq.length());
+        System.out.println(seq.subSequence(1,3));
 /*
         try (Scanner s = new Scanner("role_names").useDelimiter("\\n")) {
             while(s.hasNext()) {
