@@ -1,4 +1,5 @@
 import java.math.BigInteger;
+import java.util.logging.Logger;
 
 public class Post_task_4_3_7 {
     public static final String AUSTIN_POWERS = "Austin Powers";
@@ -143,18 +144,102 @@ public class Post_task_4_3_7 {
         }
     }
 
+    public static class StolenPackageException extends RuntimeException {
+    }
+
+    ;
+
+    public static class IllegalPackageException extends RuntimeException {
+    }
+
+    ;
+
     public static class UntrustworthyMailWorker implements MailService {
+
+        private MailService[] guests;
+        private final RealMailService realMailService = new RealMailService();
+
+        public UntrustworthyMailWorker(MailService[] guests) {
+            this.guests = guests;
+        }
 
         @Override
         public Sendable processMail(Sendable mail) {
+            Sendable proc = mail;
+            for (MailService guest : guests) {
+                proc = guest.processMail(proc);
+            }
+            return realMailService.processMail(proc);
+        }
 
+        public RealMailService getRealMailService() {
+            return realMailService;
+        }
+    }
 
+    public static class Spy implements MailService {
+        private Logger Log;
 
+        public Spy(Logger Log) {
+            this.Log = Log;
+        }
+
+        @Override
+        public Sendable processMail(Sendable mail) {
+            if ((mail instanceof MailMessage) && ((((MailMessage) mail).getFrom().contains(AUSTIN_POWERS)) || (((MailMessage) mail).getTo().contains(AUSTIN_POWERS)))) {
+                Log.warning("Detected target mail correspondence: from " + ((MailMessage) mail).getFrom() + " to " + ((MailMessage) mail).getTo() + " \"" + ((MailMessage) mail).getMessage() + "\"");
+            } else {
+                if (mail instanceof MailMessage) {
+                    Log.info("Usual correspondence: from " + ((MailMessage) mail).getFrom() + " to " + ((MailMessage) mail).getTo());
+                }
+            }
             return mail;
         }
     }
 
+    public static class Thief implements MailService {
+        private int price;
+        private int total_value;
 
+        public Thief(int price) {
+            this.price = price;
+        }
+
+        @Override
+        public Sendable processMail(Sendable mail) {
+            if (mail instanceof MailPackage) {
+                Package pack = ((MailPackage) mail).getContent();
+                if ((mail instanceof MailPackage) && ((pack.getPrice() >= price))) {
+                    total_value += pack.getPrice();
+                    Package stolen = new Package("stones instead of " + pack.getContent(), 0);
+                    mail = new MailPackage(mail.getFrom(), mail.getTo(), stolen);
+                }
+            }
+            return mail;
+        }
+
+        public int getStolenValue() {
+            return total_value;
+        }
+    }
+
+    public static class Inspector implements MailService {
+
+
+        @Override
+        public Sendable processMail(Sendable mail) {
+            if (mail instanceof MailPackage) {
+                Package pack = ((MailPackage) mail).getContent();
+                if (pack.getContent().contains("stones")) {
+                    throw new StolenPackageException();
+                }
+                if ((pack.getContent().contains(WEAPONS)) || (pack.getContent().contains(BANNED_SUBSTANCE))) {
+                    throw new IllegalPackageException();
+                }
+            }
+            return mail;
+        }
+    }
 
 
 
